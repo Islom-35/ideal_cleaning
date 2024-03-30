@@ -1,4 +1,4 @@
 .go
 .go-cache
-.env.example
+.env
 .idea
