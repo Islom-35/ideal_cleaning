@@ -90,6 +90,29 @@ const docTemplate = `{
                 }
             }
         },
+        "rest.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "count": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "rest.SuccessResponse": {
             "type": "object",
             "properties": {

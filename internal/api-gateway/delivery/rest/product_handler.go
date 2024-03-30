@@ -10,7 +10,7 @@ import (
 	"time"
 
 	grpc_client "example.com/m/internal/api-gateway/delivery/grpc"
-	"example.com/m/internal/genproto/product/pb"
+	pb "example.com/m/internal/genproto/product/pb"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,6 +27,15 @@ type ProductInput struct {
 
 type SuccessResponse struct {
 	Message string `json:"message"`
+}
+
+type ProductResponse struct {
+	ID                   int32      `json:"ID"`
+	Name                 string     `json:"name"`
+	Price                int32      `json:"price"`
+	Count                int32      `json:"count"`
+	CreatedAt            time.Time 	`json:"created_at"`
+	UpdatedAt            time.Time 	`json:"updated_at"`
 }
 
 type Handler struct {
@@ -58,12 +67,14 @@ func (h *Handler) CreateProduct(c *gin.Context) {
 	}
 
 	var productInp ProductInput
+
 	if err = json.Unmarshal(reqBytes, &productInp); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to unmarshal JSON"})
 		return
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
 	if productInp.Count==0{
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Count of products can not be nol"})
 		return
@@ -76,11 +87,13 @@ func (h *Handler) CreateProduct(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Name can not be empty"})
 		return
 	}
+
 	product := pb.ProductRequest{
 		Name:  productInp.Name,
 		Price: productInp.Price,
 		Count: productInp.Count,
 	}
+
 	err = h.productClient.CreateProduct(ctx, product)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create product"})
@@ -91,7 +104,17 @@ func (h *Handler) CreateProduct(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Product created successfully"})
 }
 
-
+// @Summary Get a product by ID
+// @Security ApiKeyAuth
+// @Description Get product details by providing its ID
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param id path int true "Product ID"
+// @Success 200 {object} ProductResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
 func (h *Handler) GetProductByID(c *gin.Context) {
 	id, err := getIdFromRequest(c)
 

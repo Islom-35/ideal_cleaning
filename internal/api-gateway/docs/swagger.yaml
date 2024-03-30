@@ -14,6 +14,21 @@ definitions:
       price:
         type: integer
     type: object
+  rest.ProductResponse:
+    properties:
+      ID:
+        type: integer
+      count:
+        type: integer
+      created_at:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      updated_at:
+        type: string
+    type: object
   rest.SuccessResponse:
     properties:
       message:
