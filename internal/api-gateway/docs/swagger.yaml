@@ -1,0 +1,66 @@
+basePath: /
+definitions:
+  rest.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  rest.ProductInput:
+    properties:
+      count:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+    type: object
+  rest.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for Clean-sweep-solution Application
+  title: Clean-sweep-solution_App
+  version: "1.0"
+paths:
+  /api/products:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with the provided JSON data
+      parameters:
+      - description: Product object that needs to be created
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/rest.ProductInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/rest.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new product
+      tags:
+      - products
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

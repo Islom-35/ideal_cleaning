@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "/pb";
+
+service ProductService {
+    rpc CreateProduct(ProductRequest)returns(EmptyResponse){}
+    rpc GetProductByID(ID)returns(ProductResponse){}
+    rpc UpdateProductByID(UpdateProductRequest)returns(EmptyResponse){}
+    rpc DeleteProductByID(ID)returns(EmptyResponse){}
+    rpc GetProductByPage(PageRequest)returns(ProductResponseList){}
+}
+
+message EmptyResponse {
+}
+message PageRequest {
+    uint32 pageNumber = 1;
+    uint32 pageSize = 2;
+}
+
+message ProductResponseList {
+    repeated ProductResponse products = 1;
+}
+
+message ProductRequest {
+    string name = 1;
+    uint32 price = 2;
+    uint32 count = 3;
+}
+
+message ProductResponse {
+    int32 ID = 1;
+    string name = 2;
+    int32 price = 3;
+    int32 count = 4;
+    google.protobuf.Timestamp created_at = 5; 
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+
+message UpdateProductRequest {
+    uint32 id = 1;
+    string name = 2;
+    uint32 price = 3;
+    uint32 count = 4;
+}
+
+message ID {
+    uint32 ID =1;
+}

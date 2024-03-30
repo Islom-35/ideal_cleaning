@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package user_proto;
+option go_package = "/pb";
+
+import "google/protobuf/timestamp.proto";
+
+service UserService {
+  rpc SignUpAdmin(NewUser) returns (Error);
+  rpc SignUpUser(NewUser) returns (Error);
+  rpc SignInUser(UserCredentials) returns (SignInResponse);
+  rpc GetUsers(UserRequest) returns (UsersResponse);
+  rpc GetUser(UserId) returns (UserResponse);
+  rpc UpdateUser(UserUpdate) returns (Error);
+  rpc DeleteUser(UserId) returns (Error);
+}
+
+message NewUser {
+  string full_name = 1;
+  string email = 2;
+  string phone = 3;
+  string password = 4;
+  string role = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  google.protobuf.Timestamp deleted_at = 8;
+}
+
+message UserCredentials {
+  string email = 1;
+  string password = 2;
+}
+
+message SignInResponse {
+  bool success = 1;
+}
+
+message UserRequest{
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message UsersResponse{
+  repeated UserResponse users = 1;
+}
+
+message UserResponse{
+  int32 id = 1;
+  string full_name = 2;
+  string email = 3;
+  string phone = 4;
+  string role = 5;
+}
+
+message UserId {
+  int32 id = 1;
+}
+
+message Error {
+  string message = 1;
+}
+
+message UserUpdate {
+  int32 id = 1;
+  string full_name = 2;
+  string phone = 3;
+  string password = 4;
+}
