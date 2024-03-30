@@ -3,6 +3,7 @@ package adapter
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -24,8 +25,11 @@ func (p *productRepo) Insert(ctx context.Context, product pb.ProductRequest) err
 	CreatedAt := time.Now()
 	_, err := p.db.Exec("INSERT INTO products (name, price, count, created_at) values ($1,$2,$3,$4)",
 		product.Name, int(product.Price), int(product.Count), CreatedAt)
-
-	return err
+	if err!=nil{
+		log.Println(err)
+		return err
+	}
+	return nil
 }
 
 func (p *productRepo) GetByID(ctx context.Context, ID int) (pb.ProductResponse, error) {

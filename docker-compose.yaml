@@ -1,56 +1,72 @@
 version: '3.8'
 
 services:
-  user-service:
-    build:
-      context: .
-      dockerfile: docker/dev/Dockerfile
-    volumes:
-      - .:/app
-      - ./.go/pkg:/go/pkg
-      - ./.go-cache:/go-cache
-    working_dir: /app
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env.example
-    environment:
-      GOCACHE: /go-cache
-    entrypoint: ["./docker/dev/entrypoint.sh", "./cmd/main.go", "user-server"]
+  # user-service:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/dev/Dockerfile
+  #   volumes:
+  #     - .:/app
+  #     - ./.go/pkg:/go/pkg
+  #     - ./.go-cache:/go-cache
+  #   working_dir: /app
+  #   ports:
+  #     - "8080:8080"
+  #   env_file:
+  #     - .env.example
+  #   environment:
+  #     GOCACHE: /go-cache
+  #   entrypoint: ["./docker/dev/entrypoint.sh", "./cmd/main.go", "user-server"]
 
-#  product-service:
-#    build:
-#      context: .
-#      dockerfile: docker/dev/Dockerfile
-#    volumes:
-#      - .:/app
-#      - ./.go/pkg:/go/pkg
-#      - ./.go-cache:/go-cache
-#    working_dir: /app
-#    ports:
-#      - "8081:8081"
-#    env_file:
-#      - .env
-#    environment:
-#      GOCACHE: /go-cache
-#    entrypoint: [ "docker/dev/entrypoint.sh", "./internal/product/cmd/main.go", "product-server" ]
-#
-#  order-service:
-#    build:
-#      context: .
-#      dockerfile: docker/dev/Dockerfile
-#    volumes:
-#      - .:/app
-#      - ./.go/pkg:/go/pkg
-#      - ./.go-cache:/go-cache
-#    working_dir: /app
-#    ports:
-#      - "8082:8082
-#    env_file:
-#      - .env
-#    environment:
-#      GOCACHE: /go-cache
-#    entrypoint: [ "docker/dev/entrypoint.sh", "./cmd/main.go", "order-server" ]
+  product-service:
+   build:
+     context: .
+     dockerfile: docker/dev/Dockerfile
+   volumes:
+     - .:/app
+     - ./.go/pkg:/go/pkg
+     - ./.go-cache:/go-cache
+   working_dir: /app
+   ports:
+     - "8081:8081"
+   env_file:
+     - .env
+   environment:
+     GOCACHE: /go-cache
+   entrypoint: [ "docker/dev/entrypoint.sh", "./internal/product/cmd/main.go", "product-server" ]
+
+  api-gateway:
+   build:
+     context: .
+     dockerfile: docker/dev/Dockerfile
+   volumes:
+     - .:/app
+     - ./.go/pkg:/go/pkg
+     - ./.go-cache:/go-cache
+   working_dir: /app
+   ports:
+     - "8000:8000"
+   env_file:
+     - .env
+   environment:
+     GOCACHE: /go-cache
+   entrypoint: [ "docker/dev/entrypoint.sh", "./internal/api-gateway/cmd/main.go", "api-gateway" ]
+  # order-service:
+  #  build:
+  #    context: .
+  #    dockerfile: docker/dev/Dockerfile
+  #  volumes:
+  #    - .:/app
+  #    - ./.go/pkg:/go/pkg
+  #    - ./.go-cache:/go-cache
+  #  working_dir: /app
+  #  ports:
+  #    - "8082:8082
+  #  env_file:
+  #    - .env
+  #  environment:
+  #    GOCACHE: /go-cache
+  #  entrypoint: [ "docker/dev/entrypoint.sh", "./cmd/main.go", "order-server" ]
 
   migrate:
     image: migrate/migrate
@@ -58,7 +74,7 @@ services:
       - .:/app
     working_dir: /app
     env_file:
-      - .env.example
+      - .env
     profiles:
       - donotstart
   db:

@@ -2,13 +2,14 @@ package app
 
 import (
 	"context"
+	"log"
 
 	"example.com/m/internal/genproto/product/pb"
 	"example.com/m/internal/product/domain"
 )
 
 type ProductUseCase interface {
-	Create(context.Context, pb.ProductRequest) error
+	Create(context.Context, pb.ProductRequest) (*pb.EmptyResponse,error)
 	GetByID(ctx context.Context, ID pb.ID) (*pb.ProductResponse, error)
 	UpdateProduct(ctx context.Context, productInp pb.UpdateProductRequest) error
 	DeleteByID(ctx context.Context, id pb.ID) error
@@ -23,16 +24,16 @@ type productUseCase struct {
 	repo domain.ProductRepository
 }
 
-func (p *productUseCase) Create(ctx context.Context, product pb.ProductRequest) error {
+func (p *productUseCase) Create(ctx context.Context, product pb.ProductRequest)(*pb.EmptyResponse,error) {
 
 	err := p.repo.Insert(ctx, product)
 
 	if err != nil {
-		return err
+		log.Println(err)
+		return nil,err	
 	}
 
-	return nil
-
+	return &pb.EmptyResponse{},nil
 }
 
 func (p *productUseCase) GetByID(ctx context.Context, ID pb.ID) (*pb.ProductResponse, error) {

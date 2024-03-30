@@ -1,9 +1,11 @@
 package grpc
 
 import (
+	"context"
+	"log"
+
 	"example.com/m/internal/genproto/product/pb"
 	"example.com/m/internal/product/app"
-	"context"
 )
 
 type productServer struct {
@@ -18,7 +20,8 @@ func NewProductServer(service app.ProductUseCase) productServer {
 }
 
 func (p *productServer) CreateProduct(ctx context.Context, product *pb.ProductRequest) (*pb.EmptyResponse, error) {
-	return nil, p.service.Create(ctx, *product)
+	log.Println(product)
+	return p.service.Create(ctx, *product)
 }
 
 func (p *productServer)GetProductByID(ctx context.Context, inp *pb.ID) (*pb.ProductResponse,error){
