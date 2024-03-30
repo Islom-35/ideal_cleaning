@@ -49,7 +49,7 @@ func NewHandler(client grpc_client.Client) *Handler {
 // @Success 201 {object} SuccessResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/products [post]
+// @Router /products [post]
 func (h *Handler) CreateProduct(c *gin.Context) {
 	reqBytes, err := io.ReadAll(c.Request.Body)
 	if err != nil {
@@ -78,6 +78,7 @@ func (h *Handler) CreateProduct(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusCreated, gin.H{"message": "Product created successfully"})
 }
+
 
 func (h *Handler) GetProductByID(c *gin.Context) {
 	id, err := getIdFromRequest(c)

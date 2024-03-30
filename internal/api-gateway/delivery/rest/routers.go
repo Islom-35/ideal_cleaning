@@ -1,10 +1,10 @@
 package rest
 
 import (
+	_ "example.com/m/internal/api-gateway/docs"
 	"github.com/gin-gonic/gin"
 	swaggerfile "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "example.com/m/internal/api-gateway/docs"
 )
 
 func (h *Handler) InitRouters() *gin.Engine {
@@ -17,6 +17,7 @@ func (h *Handler) InitRouters() *gin.Engine {
 		// productGroup.DELETE("/:id", h.DeleteProductByID)
 		// productGroup.PUT("/:id", h.UpdateProductByID)
 	}
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfile.Handler))
 	return router
 }

@@ -26,7 +26,7 @@ info:
   title: Clean-sweep-solution_App
   version: "1.0"
 paths:
-  /api/products:
+  /products:
     post:
       consumes:
       - application/json
