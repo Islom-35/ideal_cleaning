@@ -64,6 +64,18 @@ func (h *Handler) CreateProduct(c *gin.Context) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+	if productInp.Count==0{
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Count of products can not be nol"})
+		return
+	}
+	if productInp.Price==0{
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Price can not be nol"})
+		return
+	}
+	if productInp.Name==""{
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Name can not be empty"})
+		return
+	}
 	product := pb.ProductRequest{
 		Name:  productInp.Name,
 		Price: productInp.Price,

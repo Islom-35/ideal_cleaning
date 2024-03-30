@@ -3,9 +3,10 @@ package common
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx"
 	"log"
 	"strconv"
+
+	"github.com/jackc/pgx"
 )
 
 func ConnectToDb(host, port, database, user, password string) (*pgx.Conn, error) {
